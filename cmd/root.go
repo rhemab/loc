@@ -48,6 +48,7 @@ func (m *FileTypes[K, V]) Load(key K) (V, bool) {
 
 var totalDirs, totalFiles, totalLines, totalCode, totalComments, totalBlanks int64
 var exclude = []string{"node-modules", ".node", ".git", ".gitignore", "Makefile", ".DS_Store", "dist", ".toml", ".yml"}
+var excludeFlag []string
 var filter []string
 var fileTypes FileTypes[string, *Ext]
 var wg sync.WaitGroup
@@ -55,17 +56,13 @@ var wg sync.WaitGroup
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "loc",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+	Short: "Lines of code counts lines of code in a file or directory.",
+	Long: `LOC is a command-line tool for counting lines of code, blank lines, and comments in a given directory.
+It recursively scans directories and provides a breakdown of different file types.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		start := time.Now()
+
+		exclude = append(exclude, excludeFlag...)
 
 		filePath, err := os.Getwd()
 		if err != nil {
@@ -90,8 +87,6 @@ to quickly create a Cobra application.`,
 	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -100,15 +95,8 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.loc.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().StringSliceVarP(&filter, "filter", "f", []string{}, "Filter by file type: .go,.py,.lua,etc...")
+	rootCmd.Flags().StringSliceVarP(&excludeFlag, "exclude", "e", []string{}, "Exclude by file type or name: .go,.py,assets")
 }
 
 func readFile(filePath string) {

@@ -67,5 +67,13 @@ By default, LOC excludes the following:
 - `dist`
 - `.toml`, `.yml`
 
+### Excluding by File Type
+
+To exclude specific file types:
+
+```sh
+loc --exclude .go,.py
+```
+
 ## Contributing
 Contributions are welcome! Feel free to submit issues and pull requests.
