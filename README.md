@@ -31,6 +31,9 @@ Or specify a target directory:
 ```sh
 loc /path/to/directory
 ```
+```sh
+echo /path/to/directory | loc
+```
 
 ### Filtering by File Type
 
