@@ -15,7 +15,7 @@ LOC is a command-line tool for counting lines of code, blank lines, and comments
 To install LOC, use the following command:
 
 ```sh
-go install github.com/yourusername/loc@latest
+go install github.com/rhemab/loc@latest
 ```
 
 ## Usage
