@@ -178,10 +178,10 @@ func readDir(filePath string) {
 
 		if file.IsDir() {
 			wg.Add(1)
-			go func() {
+			go func(p string) {
 				defer wg.Done()
-				readDir(newPath)
-			}()
+				readDir(p)
+			}(newPath)
 			continue
 		}
 
